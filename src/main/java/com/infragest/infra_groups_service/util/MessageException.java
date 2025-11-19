@@ -16,6 +16,7 @@ public abstract class MessageException {
     public static final String EMPLOYEE_NOT_ACTIVE = "Employee %s no está activo";
     public static final String EMPLOYEE_ALREADY_IN_GROUP = "Employee %s ya pertenece al grupo";
     public static final String EMPLOYEE_NOT_IN_GROUP = "Employee %s no pertenece al grupo";
+    public static final String EMPLOYEE_ALREADY_EXISTS = "Employee ya existe: %s";
 
     public static final String INVALID_EMPLOYEE_LIST = "Lista de empleados inválida";
     public static final String INVALID_REQUEST = "Request inválido";
