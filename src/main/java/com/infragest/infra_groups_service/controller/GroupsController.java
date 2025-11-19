@@ -46,8 +46,7 @@ public class GroupsController {
      */
     @GetMapping
     public ResponseEntity<List<GroupRs>> listGroups() {
-        List<GroupRs> result = groupService.listGroups();
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(groupService.listGroups());
     }
 
     /**
@@ -64,8 +63,7 @@ public class GroupsController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<GroupRs> update(@PathVariable UUID id, @Valid @RequestBody GroupRq dto) {
-        GroupRs updated = groupService.updateGroup(id, dto);
-        return ResponseEntity.ok(updated);
+        return ResponseEntity.ok(groupService.updateGroup(id, dto));
     }
 
     /**
