@@ -13,4 +13,20 @@ import java.util.UUID;
  * @since 2025-11-07
  */
 public interface GroupsRepository extends JpaRepository<Group, UUID> {
+
+    /**
+     * Comprueba si existe un grupo con el nombre exactamente igual.
+     *
+     * @param name nombre a comprobar
+     * @return true si existe al menos un Group con ese name
+     */
+    boolean existsByName(String name);
+
+    /**
+     * Comprueba si existe un grupo con el nombre ignorando mayúsculas/minúsculas.
+     *
+     * @param name nombre a comprobar
+     * @return true si existe al menos un Group con ese name (case-insensitive)
+     */
+    boolean existsByNameIgnoreCase(String name);
 }

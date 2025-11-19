@@ -60,6 +60,28 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * Maneja {@link EmployeeException} y la mapea a un código HTTP.
+     *
+     * @param ex excepción de negocio del módulo Group
+     * @return ResponseEntity con el status apropiado y detalles del error
+     */
+    @ExceptionHandler(EmployeeException.class)
+    public ResponseEntity<?> handleDeviceException(EmployeeException ex) {
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        if (ex.getType() == EmployeeException.Type.NOT_FOUND) {
+            status = HttpStatus.NOT_FOUND;
+        }
+        return ResponseEntity.status(status)
+                .body(Map.of(
+                        "timestamp", LocalDateTime.now(),
+                        "status", status.value(),
+                        "error", "Group Error",
+                        "type", ex.getType(),
+                        "message", ex.getMessage()
+                ));
+    }
+
+    /**
      * Maneja excepciones no controladas y devuelve 500.
      *
      * @param ex excepción no controlada

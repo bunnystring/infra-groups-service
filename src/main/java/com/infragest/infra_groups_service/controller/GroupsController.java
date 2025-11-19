@@ -46,12 +46,11 @@ public class GroupsController {
      */
     @GetMapping
     public ResponseEntity<List<GroupRs>> listGroups() {
-        List<GroupRs> result = groupService.listGroups(); // debe existir groupService.list() que devuelva List<GroupRs>
-        return ResponseEntity.ok(result);
+        return ResponseEntity.ok(groupService.listGroups());
     }
 
     /**
-     * Obtiene un grupo por id.
+     * Obtiene un grupo por ID.
      */
     @GetMapping("/{id}")
     public ResponseEntity<GroupRs> getGroupById(@PathVariable UUID id) {
@@ -64,8 +63,7 @@ public class GroupsController {
      */
     @PutMapping("/{id}")
     public ResponseEntity<GroupRs> update(@PathVariable UUID id, @Valid @RequestBody GroupRq dto) {
-        GroupRs updated = groupService.updateGroup(id, dto);
-        return ResponseEntity.ok(updated);
+        return ResponseEntity.ok(groupService.updateGroup(id, dto));
     }
 
     /**
@@ -82,11 +80,10 @@ public class GroupsController {
      *
      * Recibe una lista de employeeIds y devuelve el grupo actualizado.
      */
-    @PostMapping("/{id}/employees")
+    @PostMapping("/employees/{id}")
     public ResponseEntity<GroupRs> assignEmployees(@PathVariable("id") UUID id,
                                                    @Valid @RequestBody AssignEmployeesRq rq) {
-        GroupRs updated = groupService.assignEmployees(id, rq);
-        return ResponseEntity.ok(updated);
+        return ResponseEntity.ok(groupService.assignEmployees(id, rq));
     }
 
     /**

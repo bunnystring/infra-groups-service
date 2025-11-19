@@ -1,9 +1,7 @@
 package com.infragest.infra_groups_service.entity;
 
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,6 +16,8 @@ import java.util.Set;
  */
 @Builder
 @Data
+@AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode(callSuper = true)
 @Entity
 @Table(name = "infra_groups")
@@ -40,12 +40,15 @@ public class Group extends BaseEntity{
      *
      * Relación Many-To-Many mediante la tabla "infra_group_employees".
      */
+    @Builder.Default
     @ManyToMany
     @JoinTable(
             name = "infra_group_employees",
             joinColumns = @JoinColumn(name = "group_id"),
-            inverseJoinColumns = @JoinColumn(name = "employe_id")
+            inverseJoinColumns = @JoinColumn(name = "employee_id")
     )
+    @EqualsAndHashCode.Exclude
+    @ToString.Exclude
     private Set<Employees> employees = new HashSet<>();
 
 }
