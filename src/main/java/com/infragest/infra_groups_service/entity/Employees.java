@@ -2,9 +2,7 @@ package com.infragest.infra_groups_service.entity;
 
 import com.infragest.infra_groups_service.enums.EmployeStatus;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 /**
  * Entidad que representa un empleado del sistema.
@@ -16,6 +14,8 @@ import lombok.EqualsAndHashCode;
 @Builder
 @Data
 @EqualsAndHashCode(callSuper = true)
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "infra_employees")
 public class Employees extends BaseEntity{
