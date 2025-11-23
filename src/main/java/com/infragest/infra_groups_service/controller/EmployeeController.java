@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("groups/employees")
+@RequestMapping("employees")
 @Tag(name = "Employees", description = "Operaciones para administrar empleados")
 public class EmployeeController {
 
