@@ -3,10 +3,7 @@ package com.infragest.infra_groups_service.service.impl;
 import com.infragest.infra_groups_service.entity.Employees;
 import com.infragest.infra_groups_service.entity.Group;
 import com.infragest.infra_groups_service.exception.GroupException;
-import com.infragest.infra_groups_service.model.AssignEmployeesRq;
-import com.infragest.infra_groups_service.model.EmployeeSummaryDto;
-import com.infragest.infra_groups_service.model.GroupRq;
-import com.infragest.infra_groups_service.model.GroupRs;
+import com.infragest.infra_groups_service.model.*;
 import com.infragest.infra_groups_service.repository.EmployeesRepository;
 import com.infragest.infra_groups_service.repository.GroupsRepository;
 import com.infragest.infra_groups_service.service.GroupService;
@@ -16,6 +13,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -419,6 +417,40 @@ public class GroupServiceImpl implements GroupService {
                 .fullName(e.getFullName())
                 .email(e.getEmail())
                 .status(e.getStatus())
+                .build();
+    }
+
+    /**
+     * Devuelve los correos electrónicos de los miembros de un grupo.
+     *
+     * @param id UUID del grupo del que se desean obtener los correos. No puede ser {@code null}.
+     * @return {@link GroupMembersEmailRs} con la información del grupo y el conjunto de emails de sus miembros.
+     * @throws GroupException cuando:
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public GroupMembersEmailRs getGroupMembersEmails(UUID id) {
+
+        // Buscar el grupo o lanzar NotFound
+        Group g = groupRepository.findById(id).orElseThrow(() ->
+                new GroupException(MessageException.GROUP_NOT_FOUND + id, GroupException.Type.NOT_FOUND));
+
+        // Extraer emails limpios desde la colección many-to-many (puede ser null)
+        Set<String> emails = Optional.ofNullable(g.getEmployees()).orElse(Collections.emptySet()).stream()
+                .map(Employees::getEmail)
+                .filter(Objects::nonNull)
+                .map(String::trim)
+                .filter(s -> !s.isBlank())
+                .collect(Collectors.toSet());
+
+
+        // Construir DTO de respuesta
+        return GroupMembersEmailRs.builder()
+                .groupId(g.getId())
+                .groupName(g.getName())
+                .emails(emails)
+                .count(emails.size())
+                .fetchedAt(LocalDateTime.now())
                 .build();
     }
 }
