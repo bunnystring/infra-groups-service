@@ -1,6 +1,7 @@
 package com.infragest.infra_groups_service.controller;
 
 import com.infragest.infra_groups_service.model.AssignEmployeesRq;
+import com.infragest.infra_groups_service.model.GroupMembersEmailRs;
 import com.infragest.infra_groups_service.model.GroupRq;
 import com.infragest.infra_groups_service.model.GroupRs;
 import com.infragest.infra_groups_service.service.GroupService;
@@ -163,7 +164,7 @@ public class GroupsController {
             required = true,
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = AssignEmployeesRq.class))
     )
-    @PostMapping("/employees/{id}")
+    @PostMapping("/{id}/employees")
     public ResponseEntity<GroupRs> assignEmployees(@PathVariable("id") UUID id,
                                                    @Valid @RequestBody AssignEmployeesRq rq) {
         return ResponseEntity.ok(groupService.assignEmployees(id, rq));
@@ -187,5 +188,27 @@ public class GroupsController {
                                                @PathVariable("employeeId") UUID employeeId) {
         groupService.removeEmployee(id, employeeId);
         return ResponseEntity.noContent().build();
+    }
+
+    /**
+     * Devuelve los correos electrónicos de los miembros del grupo.
+     * GET /groups/{id}/members/emails
+     */
+    @Operation(summary = "Obtener emails de los miembros del grupo",
+            description = "Devuelve la lista de correos electrónicos de los empleados asignados al grupo indicado. " +
+                    "Se eliminan nulos, cadenas vacías y duplicados.")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Lista de emails del grupo",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = GroupMembersEmailRs.class))),
+            @ApiResponse(responseCode = "400", description = "UUID inválido o petición inválida",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Grupo no encontrado",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Error interno del servidor",
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @GetMapping("/{id}/members/emails")
+    public ResponseEntity<GroupMembersEmailRs> getGroupMembersEmails(@PathVariable UUID id) {
+        return ResponseEntity.ok(groupService.getGroupMembersEmails(id));
     }
 }
