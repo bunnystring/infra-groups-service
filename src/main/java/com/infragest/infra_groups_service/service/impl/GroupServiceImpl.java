@@ -435,6 +435,11 @@ public class GroupServiceImpl implements GroupService {
         Group g = groupRepository.findById(id).orElseThrow(() ->
                 new GroupException(MessageException.GROUP_NOT_FOUND + id, GroupException.Type.NOT_FOUND));
 
+        // Validar si existen empleados en el grupo
+        if (g.getEmployees().isEmpty()) {
+            new GroupException(MessageException.EMPLOYEE_NOT_IN_GROUP + id, GroupException.Type.NOT_FOUND);
+        }
+
         // Extraer emails limpios desde la colección many-to-many (puede ser null)
         Set<String> emails = Optional.ofNullable(g.getEmployees()).orElse(Collections.emptySet()).stream()
                 .map(Employees::getEmail)
