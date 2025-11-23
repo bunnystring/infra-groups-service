@@ -437,7 +437,7 @@ public class GroupServiceImpl implements GroupService {
 
         // Validar si existen empleados en el grupo
         if (g.getEmployees().isEmpty()) {
-            new GroupException(MessageException.EMPLOYEE_NOT_IN_GROUP + id, GroupException.Type.NOT_FOUND);
+           throw new GroupException(MessageException.EMPLOYEE_NOT_FOUND_IN_GROUP + id, GroupException.Type.NOT_FOUND);
         }
 
         // Extraer emails limpios desde la colección many-to-many (puede ser null)
