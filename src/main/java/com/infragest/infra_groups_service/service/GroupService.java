@@ -59,5 +59,5 @@ public interface GroupService {
      * @return {@link GroupMembersEmailRs} con los correos y metadatos.
      * @throws RuntimeException Si ocurre un error de validación o acceso a datos (mapea a los tipos de excepción/HTTP que use tu app).
      */
-    GroupMembersEmailRs getGroupMembersEmails(UUID id);
+    List<String>  getGroupMembersEmails(UUID id);
 }

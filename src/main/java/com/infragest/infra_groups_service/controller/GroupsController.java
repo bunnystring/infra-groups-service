@@ -208,7 +208,7 @@ public class GroupsController {
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping("/{id}/members/emails")
-    public ResponseEntity<GroupMembersEmailRs> getGroupMembersEmails(@PathVariable UUID id) {
+    public ResponseEntity<List<String>> getGroupMembersEmails(@PathVariable UUID id) {
         return ResponseEntity.ok(groupService.getGroupMembersEmails(id));
     }
 }

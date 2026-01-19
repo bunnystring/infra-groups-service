@@ -429,7 +429,7 @@ public class GroupServiceImpl implements GroupService {
      */
     @Override
     @Transactional(readOnly = true)
-    public GroupMembersEmailRs getGroupMembersEmails(UUID id) {
+    public List<String>  getGroupMembersEmails(UUID id) {
 
         // Buscar el grupo o lanzar NotFound
         Group g = groupRepository.findById(id).orElseThrow(() ->
@@ -437,25 +437,24 @@ public class GroupServiceImpl implements GroupService {
 
         // Validar si existen empleados en el grupo
         if (g.getEmployees().isEmpty()) {
-            new GroupException(MessageException.EMPLOYEE_NOT_IN_GROUP + id, GroupException.Type.NOT_FOUND);
+           throw new GroupException(MessageException.EMPLOYEE_NOT_FOUND_IN_GROUP + id, GroupException.Type.NOT_FOUND);
         }
 
-        // Extraer emails limpios desde la colección many-to-many (puede ser null)
-        Set<String> emails = Optional.ofNullable(g.getEmployees()).orElse(Collections.emptySet()).stream()
+        // Extraer y limpiar emails desde la colección many-to-many
+        List<String> emails = Optional.ofNullable(g.getEmployees()).orElse(Collections.emptySet()).stream()
                 .map(Employees::getEmail)
                 .filter(Objects::nonNull)
                 .map(String::trim)
                 .filter(s -> !s.isBlank())
-                .collect(Collectors.toSet());
+                .distinct()
+                .collect(Collectors.toList()); // Convertir en una lista
 
 
-        // Construir DTO de respuesta
-        return GroupMembersEmailRs.builder()
-                .groupId(g.getId())
-                .groupName(g.getName())
-                .emails(emails)
-                .count(emails.size())
-                .fetchedAt(LocalDateTime.now())
-                .build();
+        // Validar que haya correos en la lista
+        if (emails.isEmpty()) {
+            throw new GroupException(MessageException.EMPLOYEE_NO_VALID_EMAILS_IN_GROUP + id, GroupException.Type.CONFLICT);
+        }
+
+        return emails; // Retornar la lista de correos
     }
 }
