@@ -8,26 +8,25 @@ public abstract class MessageException {
 
     private MessageException() {}
 
-    public static final String GROUP_NOT_FOUND = "Group no encontrado: %s";
-    public static final String GROUP_ALREADY_EXISTS = "Group ya existe: %s";
-    public static final String GROUP_DELETE_NOT_ALLOWED = "No se puede eliminar el grupo: %s";
+    public static final String GROUP_NOT_FOUND = "Group not found: %s";
+    public static final String GROUP_ALREADY_EXISTS = "Group already exists: %s";
+    public static final String GROUP_DELETE_NOT_ALLOWED = "Group cannot be deleted: %s";
 
-    public static final String EMPLOYEE_NOT_FOUND = "Employee no encontrado: %s";
-    public static final String EMPLOYEE_NOT_ACTIVE = "Employee %s no está activo";
-    public static final String EMPLOYEE_ALREADY_IN_GROUP = "Employee %s ya pertenece al grupo";
-    public static final String EMPLOYEE_NOT_IN_GROUP = "Employee %s no pertenece al grupo";
-    public static final String EMPLOYEE_ALREADY_EXISTS = "Employee ya existe: %s";
-    public static final String EMPLOYEE_NOT_FOUND_IN_GROUP = "No existen empleados en el grupo: %s";
-    public static final String EMPLOYEE_NO_VALID_EMAILS_IN_GROUP = "No hay correos válidos asociados al grupo: %s";
-    public static final String EMPLOYEE_CANNOT_BE_REMOVED_FROM_GROUP = "El empleado %s no puede ser eliminado porque está asociado a uno o más grupos.";
+    public static final String EMPLOYEE_NOT_FOUND = "Employee not found: %s";
+    public static final String EMPLOYEE_NOT_ACTIVE = "Employee %s is not active";
+    public static final String EMPLOYEE_ALREADY_IN_GROUP = "Employee %s already belongs to the group";
+    public static final String EMPLOYEE_NOT_IN_GROUP = "Employee %s does not belong to the group";
+    public static final String EMPLOYEE_ALREADY_EXISTS = "Employee already exists: %s";
+    public static final String EMPLOYEE_NOT_FOUND_IN_GROUP = "No employees found in the group: %s";
+    public static final String EMPLOYEE_NO_VALID_EMAILS_IN_GROUP = "No valid emails associated with the group: %s";
+    public static final String EMPLOYEE_CANNOT_BE_REMOVED_FROM_GROUP = "The employee %s cannot be deleted because they are associated with one or more groups.";
 
-    public static final String INVALID_EMPLOYEE_LIST = "Lista de empleados inválida";
-    public static final String INVALID_REQUEST = "Request inválido";
-    public static final String INVALID_UUID = "Identificador inválido: %s";
+    public static final String INVALID_EMPLOYEE_LIST = "Invalid employee list";
+    public static final String INVALID_REQUEST = "Invalid request";
+    public static final String INVALID_UUID = "Invalid identifier: %s";
 
-    public static final String OPERATION_NOT_ALLOWED = "Operación no permitida: %s";
-    public static final String DATABASE_ERROR = "Error en la base de datos";
-    public static final String INTERNAL_ERROR = "Error interno del servidor";
-
+    public static final String OPERATION_NOT_ALLOWED = "Operation not allowed: %s";
+    public static final String DATABASE_ERROR = "Database error";
+    public static final String INTERNAL_ERROR = "Internal server error";
 
 }
