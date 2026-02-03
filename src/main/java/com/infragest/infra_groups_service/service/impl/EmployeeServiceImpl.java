@@ -1,12 +1,14 @@
 package com.infragest.infra_groups_service.service.impl;
 
 import com.infragest.infra_groups_service.entity.Employees;
+import com.infragest.infra_groups_service.entity.Group;
 import com.infragest.infra_groups_service.enums.EmployeStatus;
 import com.infragest.infra_groups_service.exception.EmployeeException;
 import com.infragest.infra_groups_service.model.EmployeeRq;
 import com.infragest.infra_groups_service.model.EmployeeRs;
 import com.infragest.infra_groups_service.model.EmployeeSummaryDto;
 import com.infragest.infra_groups_service.repository.EmployeesRepository;
+import com.infragest.infra_groups_service.repository.GroupsRepository;
 import com.infragest.infra_groups_service.service.EmployeeService;
 import com.infragest.infra_groups_service.util.MessageException;
 import lombok.extern.slf4j.Slf4j;
@@ -37,11 +39,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final EmployeesRepository employeesRepository;
 
     /**
+     * Inyección de dependencia: GroupsRepository
+     */
+    private final GroupsRepository groupsRepository;
+
+    /**
      * Crea un constructor con los repositorios necesarios para el servicio.
      * @param employeesRepository
+     * @param groupsRepository
      */
-    public EmployeeServiceImpl(EmployeesRepository employeesRepository) {
+    public EmployeeServiceImpl(EmployeesRepository employeesRepository, GroupsRepository groupsRepository) {
         this.employeesRepository = employeesRepository;
+        this.groupsRepository = groupsRepository;
     }
 
     /**
@@ -210,6 +219,12 @@ public class EmployeeServiceImpl implements EmployeeService {
                         log.debug("Employee not found for deletion: {}", id);
                         return new EmployeeException(msg, EmployeeException.Type.NOT_FOUND);
                     });
+
+            // Validar si el empleado existe en por lo menos un grupo.
+            if (groupsRepository.existsByEmployees_Id(existing.getId())) {
+                throw new EmployeeException(String.format(MessageException.EMPLOYEE_CANNOT_BE_REMOVED_FROM_GROUP, existing.getId()), EmployeeException.Type.BAD_REQUEST);
+            }
+
             employeesRepository.delete(existing);
             log.info("Employee {} deleted", id);
         } catch (DataAccessException dae) {
