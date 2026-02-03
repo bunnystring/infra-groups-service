@@ -30,6 +30,11 @@ public interface GroupsRepository extends JpaRepository<Group, UUID> {
      */
     boolean existsByNameIgnoreCase(String name);
 
-
+    /**
+     * Comprueba si existe un empleado asociado a un grupo o mas.
+     *
+     * @param employeeId
+     * @return true si existe o false en caso de que no exista
+     */
     boolean existsByEmployees_Id(UUID employeeId);
 }
