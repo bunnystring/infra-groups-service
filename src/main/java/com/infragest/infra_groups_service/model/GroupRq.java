@@ -17,9 +17,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class GroupRq {
 
+    /**
+     * Nombre del grupo.
+     */
     @NotBlank(message = "name no puede estar vacío")
     private String name;
 
+    /**
+     * Dirección de la oficina donde se encuentra ubicados los equipos.
+     */
     @NotBlank(message = "address no puede estar vacío")
     private String address;
+
 }

@@ -183,10 +183,10 @@ public class GroupsController {
             @ApiResponse(responseCode = "500", description = "Error interno del servidor",
                     content = @Content(mediaType = "application/json", schema = @Schema(implementation = ErrorResponse.class)))
     })
-    @DeleteMapping("/{id}/employees/{employeeId}")
-    public ResponseEntity<Void> removeEmployee(@PathVariable("id") UUID id,
+    @DeleteMapping("/{groupId}/employees/{employeeId}")
+    public ResponseEntity<Void> removeEmployee(@PathVariable("groupId") UUID groupId,
                                                @PathVariable("employeeId") UUID employeeId) {
-        groupService.removeEmployee(id, employeeId);
+        groupService.removeEmployee(groupId, employeeId);
         return ResponseEntity.noContent().build();
     }
 

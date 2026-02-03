@@ -29,4 +29,7 @@ public interface GroupsRepository extends JpaRepository<Group, UUID> {
      * @return true si existe al menos un Group con ese name (case-insensitive)
      */
     boolean existsByNameIgnoreCase(String name);
+
+
+    boolean existsByEmployees_Id(UUID employeeId);
 }

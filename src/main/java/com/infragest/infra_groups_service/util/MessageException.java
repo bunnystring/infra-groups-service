@@ -19,6 +19,7 @@ public abstract class MessageException {
     public static final String EMPLOYEE_ALREADY_EXISTS = "Employee ya existe: %s";
     public static final String EMPLOYEE_NOT_FOUND_IN_GROUP = "No existen empleados en el grupo: %s";
     public static final String EMPLOYEE_NO_VALID_EMAILS_IN_GROUP = "No hay correos válidos asociados al grupo: %s";
+    public static final String EMPLOYEE_CANNOT_BE_REMOVED_FROM_GROUP = "El empleado %s no puede ser eliminado porque está asociado a uno o más grupos.";
 
     public static final String INVALID_EMPLOYEE_LIST = "Lista de empleados inválida";
     public static final String INVALID_REQUEST = "Request inválido";
