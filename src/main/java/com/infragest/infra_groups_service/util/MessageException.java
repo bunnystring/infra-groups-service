@@ -28,5 +28,6 @@ public abstract class MessageException {
     public static final String OPERATION_NOT_ALLOWED = "Operation not allowed: %s";
     public static final String DATABASE_ERROR = "Database error";
     public static final String INTERNAL_ERROR = "Internal server error";
+    public static final String NO_VALID_EMPLOYEES_TO_ASSIGN = "There aren't any valid employees to assign to the group";
 
 }
