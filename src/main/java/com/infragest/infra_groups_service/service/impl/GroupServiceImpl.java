@@ -278,8 +278,7 @@ public class GroupServiceImpl implements GroupService {
             missing.removeAll(foundIds);
             if (!missing.isEmpty()) {
                 UUID missingId = missing.iterator().next();
-                log.debug("Employee not found when assigning to group {}: {}", id, missingId);
-                throw new GroupException(String.format(MessageException.EMPLOYEE_NOT_FOUND, missingId), GroupException.Type.BAD_REQUEST);
+                log.info("Employee not found when assigning to group {}: {}", id, missingId);
             }
 
             // Comprobar estado y pertenencia actual
@@ -289,26 +288,33 @@ public class GroupServiceImpl implements GroupService {
                     .map(Employees::getId)
                     .collect(Collectors.toSet());
 
-            for (Employees e : found) {
-                // Validar estado (asumimos que status.toString() contiene algo como "ACTIVE")
-                String status = String.valueOf(e.getStatus());
-                if (status == null || !"ACTIVE".equalsIgnoreCase(status)) {
-                    log.warn("Attempt to assign inactive employee {} to group {}", e.getId(), id);
-                    throw new GroupException(String.format(MessageException.EMPLOYEE_NOT_ACTIVE, e.getId()), GroupException.Type.BAD_REQUEST);
-                }
+            // // Filtra empleados activos que no estén registrados en el grupo y genera advertencias si el empleado está inactivo o ya pertenece al grupo.
+            List<Employees> toAssign = found.stream()
+                    .filter(e -> {
+                        boolean alreadyInGroup = existingEmployeeIds.contains(e.getId());
+                        boolean isActive = e.getStatus() != null && "ACTIVE".equalsIgnoreCase(String.valueOf(e.getStatus()));
+                        if (alreadyInGroup) {
+                            log.warn("Attempt to assign employee {} who is already in group {}", e.getId(), id);
+                        }
+                        if (!isActive) {
+                            log.warn("Attempt to assign inactive employee {} to group {}", e.getId(), id);
+                        }
+                        return !alreadyInGroup && isActive;
+                    })
+                    .collect(Collectors.toList());
 
-                // Validar si ya pertenece
-                if (existingEmployeeIds.contains(e.getId())) {
-                    log.warn("Attempt to assign employee {} who is already in group {}", e.getId(), id);
-                    throw new GroupException(String.format(MessageException.EMPLOYEE_ALREADY_IN_GROUP, e.getId()), GroupException.Type.BAD_REQUEST);
-                }
+            if (toAssign.isEmpty()) {
+                throw new GroupException(
+                        MessageException.NO_VALID_EMPLOYEES_TO_ASSIGN,
+                        GroupException.Type.BAD_REQUEST
+                );
             }
 
             // Asignar todos los empleados (añadir al Set)
             if (existing.getEmployees() == null) {
-                existing.setEmployees(new HashSet<>(found));
+                existing.setEmployees(new HashSet<>(toAssign));
             } else {
-                existing.getEmployees().addAll(found);
+                existing.getEmployees().addAll(toAssign);
             }
 
             Group saved = groupRepository.save(existing);
