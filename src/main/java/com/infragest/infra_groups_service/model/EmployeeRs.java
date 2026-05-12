@@ -20,6 +20,8 @@ public class EmployeeRs {
     private String fullName;
     private String email;
     private EmployeStatus status;
+    private String documentType;
+    private String documentNumber;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Long version;
