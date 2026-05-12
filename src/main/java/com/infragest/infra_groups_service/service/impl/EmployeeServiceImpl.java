@@ -189,6 +189,12 @@ public class EmployeeServiceImpl implements EmployeeService {
             if (rq.getStatus() != null) {
                 existing.setStatus(rq.getStatus());
             }
+            if (rq.getDocumentType() != null) {
+                existing.setDocumentType(rq.getDocumentType());
+            }
+            if (rq.getDocumentNumber() != null) {
+                existing.setDocumentNumber(rq.getDocumentNumber());
+            }
 
             Employees saved = employeesRepository.save(existing);
             return toRs(saved);
