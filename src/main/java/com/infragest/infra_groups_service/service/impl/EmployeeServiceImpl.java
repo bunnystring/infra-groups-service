@@ -246,6 +246,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         r.setFullName(e.getFullName());
         r.setEmail(e.getEmail());
         r.setStatus(e.getStatus());
+        r.setDocumentType(e.getDocumentType());
+        r.setDocumentNumber(e.getDocumentNumber());
         r.setCreatedAt(e.getCreatedAt());
         r.setUpdatedAt(e.getUpdatedAt());
         r.setVersion(e.getVersion());
